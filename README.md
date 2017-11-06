@@ -1,2 +1,2 @@
 # cucumber-demo
-Cucumber Demo on a over-simplified library OO design @UNS
+Cucumber Demo on an over-simplified library OO design @UNS
