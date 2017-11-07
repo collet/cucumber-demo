@@ -1,5 +1,6 @@
 package fr.unice.polytech.biblio.steps;
 
+import cucumber.api.PendingException;
 import cucumber.api.java.en.*;
 import fr.unice.polytech.biblio.Bibliotheque;
 import fr.unice.polytech.biblio.Etudiant;
@@ -23,7 +24,6 @@ public class EmpruntLivreStepdefs {
         biblio.addEtudiant(etu);
     }
 
-
     @And("^un livre de titre \"([^\"]*)\"$")
     public void unLivreDeTitre(String arg0) throws Throwable {
         Livre liv = new Livre(biblio);
@@ -31,14 +31,14 @@ public class EmpruntLivreStepdefs {
         biblio.addLivre(liv);
     }
 
+    @Then("^Il y a (\\d+) dans son nombre d'emprunts$")
+    public void ilYADansSonNombreDEmprunts(int arg0) throws Throwable {
+        assertEquals(arg0,etudiant.getNombreDEmprunt());
+    }
+
     @When("^\"([^\"]*)\" demande son nombre d'emprunt$")
     public void demandeSonNombreDEmprunt(String arg0) throws Throwable {
         etudiant = biblio.getEtudiantByName(arg0);
-    }
-
-    @Then("^Il y (\\d+) dans son nombre d'emprunts$")
-    public void ilYDansSonNombreDEmprunts(int arg0) throws Throwable {
-        assertEquals(0,etudiant.getNombreDEmprunt());
     }
 
     @When("^\"([^\"]*)\" emprunte le livre \"([^\"]*)\"$")
@@ -46,11 +46,6 @@ public class EmpruntLivreStepdefs {
         etudiant = biblio.getEtudiantByName(arg0);
         livre = biblio.getLivreByTitle(arg1);
         etudiant.emprunte(livre);
-    }
-
-    @Then("^Il y a (\\d+) dans son nombre d'emprunts$")
-    public void ilYADansSonNombreDEmprunts(int arg0) throws Throwable {
-        assertEquals(arg0,etudiant.getNombreDEmprunt());
     }
 
     @And("^Il y a le livre \"([^\"]*)\" dans un emprunt de la liste d'emprunts$")

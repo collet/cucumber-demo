@@ -6,7 +6,7 @@ Feature: Emprunter un livre
 
   Scenario: Pas d'emprunt par défaut
     When "Marcel" demande son nombre d'emprunt
-    Then Il y 0 dans son nombre d'emprunts
+    Then Il y a 0 dans son nombre d'emprunts
 
   Scenario: emprunt d'un livre
     When "Marcel" emprunte le livre "UML pour les nuls"
