@@ -1,13 +1,12 @@
-package fr.unice.polytech.biblio.steps;
+package fr.unice.polytech.biblio;
 
-import cucumber.api.PendingException;
 import cucumber.api.java.en.*;
 import fr.unice.polytech.biblio.Bibliotheque;
 import fr.unice.polytech.biblio.Etudiant;
 import fr.unice.polytech.biblio.Livre;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class EmpruntLivreStepdefs {
