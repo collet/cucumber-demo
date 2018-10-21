@@ -1,58 +1,58 @@
 package fr.unice.polytech.biblio;
 
-import cucumber.api.java.en.*;
+import cucumber.api.java8.En;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 
-public class EmpruntLivreStepdefs {
+public class EmpruntLivreStepdefs implements En {
 
     Bibliotheque biblio = new Bibliotheque();
     Etudiant etudiant;
     Livre livre;
 
-    @Given("^un etudiant de nom \"([^\"]*)\" et de noEtudiant (\\d+)$")
-    public void unEtudiantDeNomEtDeNoEtudiant(String arg0, int arg1) throws Throwable {
-        Etudiant etu = new Etudiant(biblio);
-        etu.setNom(arg0);
-        etu.setNoEtudiant(arg1);
-        biblio.addEtudiant(etu);
-    }
+    public EmpruntLivreStepdefs() { // implementation des steps dans le constructeur (aussi possible dans des méthodes)
 
-    @And("^un livre de titre \"([^\"]*)\"$")
-    public void unLivreDeTitre(String arg0) throws Throwable {
-        Livre liv = new Livre(biblio);
-        liv.setTitre(arg0);
-        biblio.addLivre(liv);
-    }
+        Given("^un etudiant de nom \"([^\"]*)\" et de noEtudiant (\\d+)$",
+                (String nomEtudiant, Integer noEtudiant) -> // besoin de refactorer int en Integer car utilisation de la généricité par Cucumber Java 8
+                {
+                    Etudiant etu = new Etudiant(biblio);
+                    etu.setNom(nomEtudiant);
+                    etu.setNoEtudiant(noEtudiant);
+                    biblio.addEtudiant(etu);
+                });
 
-    @Then("^Il y a (\\d+) dans son nombre d'emprunts$")
-    public void ilYADansSonNombreDEmprunts(int arg0) throws Throwable {
-        assertEquals(arg0,etudiant.getNombreDEmprunt());
-    }
+        And("^un livre de titre \"([^\"]*)\"$", (String titreLivre) -> {
+            Livre liv = new Livre(biblio);
+            liv.setTitre(titreLivre);
+            biblio.addLivre(liv);
+            });
 
-    @When("^\"([^\"]*)\" demande son nombre d'emprunt$")
-    public void demandeSonNombreDEmprunt(String arg0) throws Throwable {
-        etudiant = biblio.getEtudiantByName(arg0);
-    }
 
-    @When("^\"([^\"]*)\" emprunte le livre \"([^\"]*)\"$")
-    public void emprunteLeLivre(String arg0, String arg1) throws Throwable {
-        etudiant = biblio.getEtudiantByName(arg0);
-        livre = biblio.getLivreByTitle(arg1);
-        etudiant.emprunte(livre);
-    }
+        Then("^Il y a (\\d+) dans son nombre d'emprunts$", (Integer nbEmprunts) -> {
+            assertEquals(nbEmprunts.intValue(),etudiant.getNombreDEmprunt());
+            });
 
-    @And("^Il y a le livre \"([^\"]*)\" dans un emprunt de la liste d'emprunts$")
-    public void ilYALeLivreDansUnEmpruntDeLaListeDEmprunts(String arg0) throws Throwable {
-        assertTrue(etudiant.getEmprunt().stream().
-                   anyMatch(emp -> emp.getLivreEmprunte().getTitre().equals(arg0)));
-    }
 
-    @And("^Le livre \"([^\"]*)\" est indisponible$")
-    public void leLivreEstIndisponible(String arg0) throws Throwable {
-        assertEquals(true, biblio.getLivreByTitle(arg0).getEmprunte());
+        When("^\"([^\"]*)\" demande son nombre d'emprunt$", (String nomEtudiant) -> {
+            etudiant = biblio.getEtudiantByName(nomEtudiant);
+            });
+
+        When("^\"([^\"]*)\" emprunte le livre \"([^\"]*)\"$", (String nomEtudiant, String titreLivre) -> {
+            etudiant = biblio.getEtudiantByName(nomEtudiant);
+            livre = biblio.getLivreByTitle(titreLivre);
+            etudiant.emprunte(livre);
+            });
+
+        And("^Il y a le livre \"([^\"]*)\" dans un emprunt de la liste d'emprunts$", (String titreLivre) -> {
+            assertTrue(etudiant.getEmprunt().stream().
+                    anyMatch(emp -> emp.getLivreEmprunte().getTitre().equals(titreLivre)));
+            });
+
+        And("^Le livre \"([^\"]*)\" est indisponible$", (String titreLivre) -> {
+            assertEquals(true, biblio.getLivreByTitle(titreLivre).getEmprunte());
+            });
     }
 
 }
