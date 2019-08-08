@@ -1,12 +1,11 @@
 package fr.unice.polytech.biblio;
 
-import cucumber.api.java8.En;
+import io.cucumber.java8.Fr;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
-
-public class EmpruntLivreStepdefs implements En {
+public class EmpruntLivreStepdefs implements Fr { // implements En si vos scénarios sont écrits en anglais
 
     Bibliotheque biblio = new Bibliotheque();
     Etudiant etudiant;
@@ -14,7 +13,7 @@ public class EmpruntLivreStepdefs implements En {
 
     public EmpruntLivreStepdefs() { // implementation des steps dans le constructeur (aussi possible dans des méthodes)
 
-        Given("^un etudiant de nom \"([^\"]*)\" et de noEtudiant (\\d+)$",
+        Etantdonné("un etudiant de nom {string} et de noEtudiant {int}",
                 (String nomEtudiant, Integer noEtudiant) -> // besoin de refactorer int en Integer car utilisation de la généricité par Cucumber Java 8
                 {
                     Etudiant etu = new Etudiant(biblio);
@@ -23,34 +22,34 @@ public class EmpruntLivreStepdefs implements En {
                     biblio.addEtudiant(etu);
                 });
 
-        And("^un livre de titre \"([^\"]*)\"$", (String titreLivre) -> {
+        Et("un livre de titre {string}", (String titreLivre) -> {
             Livre liv = new Livre(biblio);
             liv.setTitre(titreLivre);
             biblio.addLivre(liv);
             });
 
 
-        Then("^Il y a (\\d+) dans son nombre d'emprunts$", (Integer nbEmprunts) -> {
+        Alors("Il y a {int} dans son nombre d'emprunts", (Integer nbEmprunts) -> {
             assertEquals(nbEmprunts.intValue(),etudiant.getNombreDEmprunt());
             });
 
 
-        When("^\"([^\"]*)\" demande son nombre d'emprunt$", (String nomEtudiant) -> {
+        Quand("{string} demande son nombre d'emprunt", (String nomEtudiant) -> {
             etudiant = biblio.getEtudiantByName(nomEtudiant);
             });
 
-        When("^\"([^\"]*)\" emprunte le livre \"([^\"]*)\"$", (String nomEtudiant, String titreLivre) -> {
+        Quand("{string} emprunte le livre {string}", (String nomEtudiant, String titreLivre) -> {
             etudiant = biblio.getEtudiantByName(nomEtudiant);
             livre = biblio.getLivreByTitle(titreLivre);
             etudiant.emprunte(livre);
             });
 
-        And("^Il y a le livre \"([^\"]*)\" dans un emprunt de la liste d'emprunts$", (String titreLivre) -> {
+        Et("Il y a le livre {string} dans un emprunt de la liste d'emprunts", (String titreLivre) -> {
             assertTrue(etudiant.getEmprunt().stream().
                     anyMatch(emp -> emp.getLivreEmprunte().getTitre().equals(titreLivre)));
             });
 
-        And("^Le livre \"([^\"]*)\" est indisponible$", (String titreLivre) -> {
+        Et("Le livre {string} est indisponible", (String titreLivre) -> {
             assertEquals(true, biblio.getLivreByTitle(titreLivre).getEmprunte());
             });
     }
