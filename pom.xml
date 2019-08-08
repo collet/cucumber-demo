@@ -4,22 +4,31 @@
 
     <groupId>BiblioTeam</groupId> <!-- CHANGE ME -->
     <artifactId>Biblio</artifactId> <!-- CHANGE ME -->
-    <version>0.1-SNAPSHOT</version> <!-- CHANGE ME -->
+    <version>0.2-SNAPSHOT</version> <!-- CHANGE ME -->
 
   <properties>
-   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- CHANGE ME IF NEEDED, other : ISO-8859-1 -->
-   <maven.compiler.source>1.8</maven.compiler.source> 
-   <maven.compiler.target>1.8</maven.compiler.target>
-   <cucumber.version>4.0.0</cucumber.version>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> <!-- CHANGE ME IF NEEDED, other : ISO-8859-1 -->
+      <java.version>11</java.version>
+      <maven.compiler.source>${java.version}</maven.compiler.source>
+      <maven.compiler.target>${java.version}</maven.compiler.target>
+      <cucumber.version>4.7.1</cucumber.version>
+      <junit.jupiter.version>5.5.1</junit.jupiter.version>
   </properties>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency> <!-- Junit 5 vintage to JUnit 4 necessary for Cucumber 4.X + Junit 5.X -->
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java8</artifactId>
@@ -33,4 +42,15 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
