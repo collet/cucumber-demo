@@ -36,7 +36,7 @@ public class BookRentalStepdefs {
 
     @Then("There is {int} in his number of rentals")
     public void thenNbRentals(Integer nbEmprunts) {
-        assertEquals(nbEmprunts.intValue(),etudiant.getNombreDEmprunt());
+        assertEquals(nbEmprunts.intValue(),etudiant.getNombreDEmprunt()-1);
     }
 
 
